@@ -4,16 +4,16 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.ViewModelProvider
 import com.example.secondcomposeproject.ui.theme.InstagramProfileCard
 import com.example.secondcomposeproject.ui.theme.SecondComposeProjectTheme
@@ -37,21 +37,15 @@ private fun Test(viewModel: MainViewModel) {
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
         ) {
-            LazyColumn {
-                item {
-                    Text(text = "Title", color = MaterialTheme.colorScheme.onSecondary)
-                }
-                items(10) {
-                    InstagramProfileCard(viewModel)
-                }
-                item {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_instagram),
-                        contentDescription = null
+            val models = viewModel.models.observeAsState(listOf())
+            LazyVerticalGrid(columns = GridCells.Fixed(2)) {
+                items(models.value) { model ->
+                    InstagramProfileCard(
+                        model = model,
+                        onFollowedButtonClickListener = {
+                            viewModel.changeFollowingStatus(it)
+                        }
                     )
-                }
-                items(500) {
-                    InstagramProfileCard(viewModel)
                 }
             }
         }
