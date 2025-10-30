@@ -100,9 +100,9 @@ private fun FollowButton(
         onClick = { clickListener() },
         colors = ButtonDefaults.buttonColors(
             containerColor = if (isFollowed.value) {
-                Color.Unspecified.copy(0.5f)
+                MaterialTheme.colorScheme.primary.copy(0.5f)
             } else {
-                Color.Unspecified
+                MaterialTheme.colorScheme.primary
             }
         )
     ) {
